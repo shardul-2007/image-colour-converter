@@ -1,0 +1,45 @@
+# Build directories
+build/
+bin/
+out/
+test_output/
+output/
+cmake-build-*/
+
+# Compiled binaries and object files
+*.exe
+*.obj
+*.o
+*.a
+*.lib
+*.dll
+*.so
+*.dylib
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.ninja
+.ninja_*
+compile_commands.json
+
+# IDE and Editor configuration
+.vscode/
+.idea/
+*.user
+*.suo
+*.VC.db
+CMakeSettings.json
+
+# Operating System specific files
+Thumbs.db
+[Dd]esktop.ini
+.DS_Store
+
+# Temporary and log files
+*.log
+*.tmp
+__pycache__/
+*.pyc
