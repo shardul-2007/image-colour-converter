@@ -2,10 +2,16 @@
 
 > An Object-Oriented Image Colour Conversion Application built with C++17, OpenCV 4.x, and CMake.
 
+[![Live Web Demo](https://img.shields.io/badge/Live%20Demo-Deployed%20on%20GitHub%20Pages-brightgreen.svg?style=for-the-badge&logo=github)](https://shardul-2007.github.io/image-colour-converter/)
+
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.cppreference.com/w/cpp/17)
 [![OpenCV](https://img.shields.io/badge/OpenCV-4.x-green.svg)](https://opencv.org/)
 [![CMake](https://img.shields.io/badge/CMake-3.16%2B-red.svg)](https://cmake.org/)
+[![GitHub Actions CI](https://github.com/shardul-2007/image-colour-converter/actions/workflows/ci-build.yml/badge.svg)](https://github.com/shardul-2007/image-colour-converter/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+🌐 **Live Interactive Deployed Demo:** [https://shardul-2007.github.io/image-colour-converter/](https://shardul-2007.github.io/image-colour-converter/)  
+📁 **GitHub Source Repository:** [https://github.com/shardul-2007/image-colour-converter](https://github.com/shardul-2007/image-colour-converter)
 
 ---
 

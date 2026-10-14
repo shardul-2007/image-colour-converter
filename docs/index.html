@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Colour Converter | Team 13 - NMIET</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --surface-card: #334155;
+            --primary: #38bdf8;
+            --primary-hover: #0284c7;
+            --accent: #f59e0b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #475569;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1280px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            position: relative;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--primary);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 6px;
+            letter-spacing: -0.025em;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .meta-item strong {
+            color: var(--text-main);
+        }
+
+        .github-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #24292e;
+            color: #ffffff;
+            border: 1px solid #444d56;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 12px;
+            transition: all 0.2s;
+        }
+
+        .github-link-btn:hover {
+            background: #2f363d;
+            border-color: #6a737d;
+            color: var(--primary);
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 960px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .controls-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            height: fit-content;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        button {
+            background: var(--surface-card);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        button:hover {
+            background: var(--primary);
+            color: #000000;
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-reset {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+        }
+
+        .btn-reset:hover {
+            background: var(--danger);
+            color: #ffffff;
+            border-color: var(--danger);
+        }
+
+        .btn-export {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.4);
+            color: #6ee7b7;
+        }
+
+        .btn-export:hover {
+            background: var(--success);
+            color: #000000;
+            border-color: var(--success);
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .slider-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--surface-card);
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+        }
+
+        .preview-area {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .canvas-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .canvas-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .viewport-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .viewport-header {
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .canvas-wrapper {
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #090d16;
+            min-height: 280px;
+            overflow: auto;
+            position: relative;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            cursor: crosshair;
+        }
+
+        .inspector-panel {
+            background: var(--surface-color);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .inspector-metric {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .color-swatch {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 2px solid #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+            background: #ffffff;
+        }
+
+        .inspector-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .inspector-details .label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .inspector-details .val {
+            font-family: monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .architecture-banner {
+            background: var(--surface-color);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .arch-card {
+            background: var(--surface-card);
+            border-radius: 8px;
+            padding: 14px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .arch-card h4 {
+            color: var(--primary);
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+        }
+
+        .arch-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        footer {
+            margin-top: 32px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding: 16px;
+            border-top: 1px solid var(--border);
+            width: 100%;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .note-callout {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 10px 14px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.82rem;
+            color: #fde68a;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <header>
+        <span class="badge">Academic Review — Mini Project (OOP)</span>
+        <h1>Image Colour Converter</h1>
+        <p class="subtitle">An Object-Oriented Image Colour Conversion Application (C++17 / OpenCV 4.x Architecture)</p>
+
+        <div class="meta-grid">
+            <div class="meta-item"><strong>Team:</strong> Team 13</div>
+            <div class="meta-item"><strong>Department:</strong> Information Technology</div>
+            <div class="meta-item"><strong>Institute:</strong> NMIET, Pune</div>
+            <div class="meta-item"><strong>Members:</strong> Parihar Shardul & Wankhade Ishan</div>
+        </div>
+
+        <a href="https://github.com/shardul-2007/image-colour-converter" target="_blank" rel="noopener noreferrer" class="github-link-btn">
+            <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+            </svg>
+            View C++ Source Code on GitHub
+        </a>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="main-layout">
+        <!-- Controls Sidebar -->
+        <aside class="controls-card">
+            <div class="section-title">
+                <span>📁 Image Input</span>
+            </div>
+
+            <div class="file-input-wrapper">
+                <button type="button">
+                    <span>Choose Image File...</span>
+                    <span>📂</span>
+                </button>
+                <input type="file" id="imageInput" accept="image/png, image/jpeg, image/jpg, image/bmp">
+            </div>
+
+            <button type="button" id="btnLoadSample">
+                <span>Load Test Pattern</span>
+                <span>🎨</span>
+            </button>
+
+            <div class="section-title">
+                <span>⚙️ Colour Transformations</span>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" id="btnGrayscale">
+                    <span>Grayscale (BT.601)</span>
+                    <kbd>G</kbd>
+                </button>
+                <button type="button" id="btnInvert">
+                    <span>Invert Colours</span>
+                    <kbd>I</kbd>
+                </button>
+                <button type="button" id="btnToggleBgrRgb">
+                    <span>Toggle BGR / RGB</span>
+                    <kbd>T</kbd>
+                </button>
+            </div>
+
+            <div class="section-title">
+                <span>🎚️ Channel Isolation</span>
+            </div>
+            <div class="btn-group">
+                <button type="button" id="btnIsolateBlue">
+                    <span>Isolate Blue</span>
+                    <kbd>1</kbd>
+                </button>
+                <button type="button" id="btnIsolateGreen">
+                    <span>Isolate Green</span>
+                    <kbd>2</kbd>
+                </button>
+                <button type="button" id="btnIsolateRed">
+                    <span>Isolate Red</span>
+                    <kbd>3</kbd>
+                </button>
+            </div>
+
+            <div class="section-title">
+                <span>🎛️ Channel Tuning</span>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-item">
+                    <div class="slider-header">
+                        <span style="color: #60a5fa;">Blue Intensity</span>
+                        <span id="blueVal">100%</span>
+                    </div>
+                    <input type="range" id="blueSlider" min="0" max="200" value="100">
+                </div>
+                <div class="slider-item">
+                    <div class="slider-header">
+                        <span style="color: #4ade80;">Green Intensity</span>
+                        <span id="greenVal">100%</span>
+                    </div>
+                    <input type="range" id="greenSlider" min="0" max="200" value="100">
+                </div>
+                <div class="slider-item">
+                    <div class="slider-header">
+                        <span style="color: #f87171;">Red Intensity</span>
+                        <span id="redVal">100%</span>
+                    </div>
+                    <input type="range" id="redSlider" min="0" max="200" value="100">
+                </div>
+            </div>
+
+            <div class="note-callout">
+                <strong>Memory vs. Space Note:</strong> BGR/RGB toggle modifies channel byte ordering in memory, not perceptual color spaces (e.g. HSV/CIELAB).
+            </div>
+
+            <div class="section-title">
+                <span>💾 Actions & Export</span>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" id="btnReset" class="btn-reset">
+                    <span>Reset to Original</span>
+                    <kbd>R</kbd>
+                </button>
+                <button type="button" id="btnExportPng" class="btn-export">
+                    <span>Export PNG</span>
+                    <span>📥</span>
+                </button>
+                <button type="button" id="btnExportJpg" class="btn-export">
+                    <span>Export JPEG</span>
+                    <span>📥</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Preview Viewport -->
+        <main class="preview-area">
+            <div class="canvas-grid">
+                <!-- Original Canvas -->
+                <div class="viewport-card">
+                    <div class="viewport-header">
+                        <span>Original Image (Pristine)</span>
+                        <span id="origDimensions" style="color: var(--text-muted);">400 x 300</span>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <canvas id="origCanvas" width="400" height="300"></canvas>
+                    </div>
+                </div>
+
+                <!-- Converted Canvas -->
+                <div class="viewport-card">
+                    <div class="viewport-header">
+                        <span>Converted Image Preview</span>
+                        <span id="activeModeBadge" class="badge" style="margin: 0; padding: 2px 8px; font-size: 0.75rem;">Original</span>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <canvas id="procCanvas" width="400" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pixel Inspector HUD -->
+            <div class="inspector-panel">
+                <div class="inspector-metric">
+                    <div class="color-swatch" id="inspectorSwatch"></div>
+                    <div class="inspector-details">
+                        <span class="label">Pixel Coordinate</span>
+                        <span class="val" id="inspectorCoord">(X: 200, Y: 150)</span>
+                    </div>
+                </div>
+
+                <div class="inspector-details">
+                    <span class="label">Channel Values (B, G, R)</span>
+                    <span class="val" id="inspectorBgr">B: 0 | G: 255 | R: 255</span>
+                </div>
+
+                <div class="inspector-details">
+                    <span class="label">Hex Color Code</span>
+                    <span class="val" id="inspectorHex" style="color: var(--primary);">#FFFF00</span>
+                </div>
+
+                <div class="inspector-details">
+                    <span class="label">Perceptual Luminance (BT.601)</span>
+                    <span class="val" id="inspectorLuma">225.9 / 255</span>
+                </div>
+            </div>
+
+            <!-- Architectural Mapping -->
+            <div class="architecture-banner">
+                <div class="arch-card">
+                    <h4>ImageManager Class</h4>
+                    <p>Encapsulates the pristine original image data and provides bounds-checked metadata inspection.</p>
+                </div>
+                <div class="arch-card">
+                    <h4>ColourProcessor Class</h4>
+                    <p>Applies non-destructive mathematical transforms (BT.601 grayscale, inversion, channel isolation/scaling).</p>
+                </div>
+                <div class="arch-card">
+                    <h4>OutputManager Class</h4>
+                    <p>Validates file formats and performs image serialization for PNG/JPEG export without data corruption.</p>
+                </div>
+                <div class="arch-card">
+                    <h4>ImageConverterApp Class</h4>
+                    <p>Coordinates system state, dispatches user actions, and manages the interactive Pixel Inspector HUD.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Image Colour Converter — First Review Mini Project (OOP) | Department of Information Technology, NMIET</p>
+        <p>Developed by Team 13: Parihar Shardul Rajendra (SEITB243) & Wankhade Ishan Vijay (SEITB266)</p>
+    </footer>
+</div>
+
+<script>
+    // Elements
+    const origCanvas = document.getElementById('origCanvas');
+    const procCanvas = document.getElementById('procCanvas');
+    const origCtx = origCanvas.getContext('2d', { willReadFrequently: true });
+    const procCtx = procCanvas.getContext('2d', { willReadFrequently: true });
+
+    const imageInput = document.getElementById('imageInput');
+    const btnLoadSample = document.getElementById('btnLoadSample');
+    const btnGrayscale = document.getElementById('btnGrayscale');
+    const btnInvert = document.getElementById('btnInvert');
+    const btnToggleBgrRgb = document.getElementById('btnToggleBgrRgb');
+    const btnIsolateBlue = document.getElementById('btnIsolateBlue');
+    const btnIsolateGreen = document.getElementById('btnIsolateGreen');
+    const btnIsolateRed = document.getElementById('btnIsolateRed');
+    const btnReset = document.getElementById('btnReset');
+    const btnExportPng = document.getElementById('btnExportPng');
+    const btnExportJpg = document.getElementById('btnExportJpg');
+
+    const blueSlider = document.getElementById('blueSlider');
+    const greenSlider = document.getElementById('greenSlider');
+    const redSlider = document.getElementById('redSlider');
+    const blueVal = document.getElementById('blueVal');
+    const greenVal = document.getElementById('greenVal');
+    const redVal = document.getElementById('redVal');
+
+    const origDimensions = document.getElementById('origDimensions');
+    const activeModeBadge = document.getElementById('activeModeBadge');
+
+    const inspectorSwatch = document.getElementById('inspectorSwatch');
+    const inspectorCoord = document.getElementById('inspectorCoord');
+    const inspectorBgr = document.getElementById('inspectorBgr');
+    const inspectorHex = document.getElementById('inspectorHex');
+    const inspectorLuma = document.getElementById('inspectorLuma');
+
+    // App State (Mirroring C++ ImageConverterApp)
+    let pristineImageData = null;
+    let isRgbRepresentation = false;
+    let currentMode = "Original";
+
+    // 1. Draw Default Benchmark Pattern
+    function drawBenchmarkPattern() {
+        const w = 400, h = 300;
+        origCanvas.width = w;
+        origCanvas.height = h;
+        procCanvas.width = w;
+        procCanvas.height = h;
+
+        // Top-Left: Red
+        origCtx.fillStyle = '#FF0000';
+        origCtx.fillRect(0, 0, w / 2, h / 2);
+        // Top-Right: Green
+        origCtx.fillStyle = '#00FF00';
+        origCtx.fillRect(w / 2, 0, w / 2, h / 2);
+        // Bottom-Left: Blue
+        origCtx.fillStyle = '#0000FF';
+        origCtx.fillRect(0, h / 2, w / 2, h / 2);
+        // Bottom-Right: Gray
+        origCtx.fillStyle = '#808080';
+        origCtx.fillRect(w / 2, h / 2, w / 2, h / 2);
+
+        // Center Yellow Ring
+        origCtx.beginPath();
+        origCtx.arc(w / 2, h / 2, 45, 0, Math.PI * 2);
+        origCtx.fillStyle = '#FFFF00';
+        origCtx.fill();
+        origCtx.lineWidth = 2;
+        origCtx.strokeStyle = '#000000';
+        origCtx.stroke();
+
+        // Inner White Dot
+        origCtx.beginPath();
+        origCtx.arc(w / 2, h / 2, 20, 0, Math.PI * 2);
+        origCtx.fillStyle = '#FFFFFF';
+        origCtx.fill();
+
+        pristineImageData = origCtx.getImageData(0, 0, w, h);
+        resetState();
+        inspectAt(w / 2, h / 2);
+    }
+
+    function resetState() {
+        currentMode = "Original";
+        isRgbRepresentation = false;
+        blueSlider.value = 100;
+        greenSlider.value = 100;
+        redSlider.value = 100;
+        blueVal.innerText = "100%";
+        greenVal.innerText = "100%";
+        redVal.innerText = "100%";
+        activeModeBadge.innerText = "Original";
+        activeModeBadge.style.background = "rgba(56, 189, 248, 0.15)";
+        activeModeBadge.style.color = "var(--primary)";
+
+        if (pristineImageData) {
+            procCtx.putImageData(pristineImageData, 0, 0);
+            origDimensions.innerText = `${pristineImageData.width} x ${pristineImageData.height}`;
+        }
+    }
+
+    // 2. Transformations (Mirroring ColourProcessor)
+    function applyGrayscale() {
+        if (!pristineImageData) return;
+        const w = pristineImageData.width;
+        const h = pristineImageData.height;
+        const src = pristineImageData.data;
+        const output = procCtx.createImageData(w, h);
+        const dst = output.data;
+
+        for (let i = 0; i < src.length; i += 4) {
+            const r = src[i];
+            const g = src[i + 1];
+            const b = src[i + 2];
+            // ITU-R BT.601 luminance weighting
+            const gray = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
+            dst[i] = gray;
+            dst[i + 1] = gray;
+            dst[i + 2] = gray;
+            dst[i + 3] = src[i + 3];
+        }
+
+        procCtx.putImageData(output, 0, 0);
+        currentMode = "Grayscale (BT.601)";
+        activeModeBadge.innerText = currentMode;
+    }
+
+    function applyInvert() {
+        const current = procCtx.getImageData(0, 0, procCanvas.width, procCanvas.height);
+        const data = current.data;
+        for (let i = 0; i < data.length; i += 4) {
+            data[i] = 255 - data[i];         // R
+            data[i + 1] = 255 - data[i + 1]; // G
+            data[i + 2] = 255 - data[i + 2]; // B
+        }
+        procCtx.putImageData(current, 0, 0);
+        currentMode = "Inverted Colours";
+        activeModeBadge.innerText = currentMode;
+    }
+
+    function applyToggleBgrRgb() {
+        const current = procCtx.getImageData(0, 0, procCanvas.width, procCanvas.height);
+        const data = current.data;
+        // Swap Channel 0 (Red) and Channel 2 (Blue) in memory representation
+        for (let i = 0; i < data.length; i += 4) {
+            const temp = data[i];
+            data[i] = data[i + 2];
+            data[i + 2] = temp;
+        }
+        procCtx.putImageData(current, 0, 0);
+        isRgbRepresentation = !isRgbRepresentation;
+        currentMode = isRgbRepresentation ? "RGB Memory Layout" : "Default BGR Layout";
+        activeModeBadge.innerText = currentMode;
+    }
+
+    function applyIsolateChannel(channelIdx) {
+        if (!pristineImageData) return;
+        const w = pristineImageData.width;
+        const h = pristineImageData.height;
+        const src = pristineImageData.data;
+        const output = procCtx.createImageData(w, h);
+        const dst = output.data;
+
+        for (let i = 0; i < src.length; i += 4) {
+            dst[i] = (channelIdx === 2) ? src[i] : 0;         // Red
+            dst[i + 1] = (channelIdx === 1) ? src[i + 1] : 0; // Green
+            dst[i + 2] = (channelIdx === 0) ? src[i + 2] : 0; // Blue
+            dst[i + 3] = src[i + 3];
+        }
+
+        procCtx.putImageData(output, 0, 0);
+        currentMode = `Isolated ${channelIdx === 0 ? "Blue" : channelIdx === 1 ? "Green" : "Red"}`;
+        activeModeBadge.innerText = currentMode;
+    }
+
+    function applyChannelAdjustment() {
+        if (!pristineImageData) return;
+        const bScale = parseInt(blueSlider.value, 10) / 100.0;
+        const gScale = parseInt(greenSlider.value, 10) / 100.0;
+        const rScale = parseInt(redSlider.value, 10) / 100.0;
+
+        blueVal.innerText = `${blueSlider.value}%`;
+        greenVal.innerText = `${greenSlider.value}%`;
+        redVal.innerText = `${redSlider.value}%`;
+
+        const w = pristineImageData.width;
+        const h = pristineImageData.height;
+        const src = pristineImageData.data;
+        const output = procCtx.createImageData(w, h);
+        const dst = output.data;
+
+        for (let i = 0; i < src.length; i += 4) {
+            dst[i] = Math.min(255, Math.max(0, Math.round(src[i] * rScale)));
+            dst[i + 1] = Math.min(255, Math.max(0, Math.round(src[i + 1] * gScale)));
+            dst[i + 2] = Math.min(255, Math.max(0, Math.round(src[i + 2] * bScale)));
+            dst[i + 3] = src[i + 3];
+        }
+
+        procCtx.putImageData(output, 0, 0);
+        currentMode = "Channel Tuned";
+        activeModeBadge.innerText = currentMode;
+    }
+
+    // 3. Pixel Inspector
+    function inspectAt(x, y) {
+        if (x < 0 || x >= procCanvas.width || y < 0 || y >= procCanvas.height) return;
+        const pixel = procCtx.getImageData(x, y, 1, 1).data;
+        const r = pixel[0];
+        const g = pixel[1];
+        const b = pixel[2];
+
+        // Format Hex
+        const hex = "#" + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('').toUpperCase();
+        // Compute Luma
+        const luma = (0.299 * r + 0.587 * g + 0.114 * b).toFixed(1);
+
+        inspectorSwatch.style.backgroundColor = hex;
+        inspectorCoord.innerText = `(X: ${x}, Y: ${y})`;
+        inspectorBgr.innerText = `B: ${b} | G: ${g} | R: ${r}`;
+        inspectorHex.innerText = hex;
+        inspectorLuma.innerText = `${luma} / 255`;
+    }
+
+    function setupCanvasInspection(canvas) {
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const x = Math.floor((e.clientX - rect.left) * scaleX);
+            const y = Math.floor((e.clientY - rect.top) * scaleY);
+            inspectAt(x, y);
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (e.buttons === 1) { // Click-drag
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const x = Math.floor((e.clientX - rect.left) * scaleX);
+                const y = Math.floor((e.clientY - rect.top) * scaleY);
+                inspectAt(x, y);
+            }
+        });
+    }
+
+    setupCanvasInspection(origCanvas);
+    setupCanvasInspection(procCanvas);
+
+    // 4. File Upload Handler
+    imageInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const img = new Image();
+            img.onload = () => {
+                origCanvas.width = img.width;
+                origCanvas.height = img.height;
+                procCanvas.width = img.width;
+                procCanvas.height = img.height;
+
+                origCtx.drawImage(img, 0, 0);
+                pristineImageData = origCtx.getImageData(0, 0, img.width, img.height);
+                resetState();
+                inspectAt(Math.floor(img.width / 2), Math.floor(img.height / 2));
+            };
+            img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // 5. Buttons and Keyboard bindings
+    btnLoadSample.addEventListener('click', drawBenchmarkPattern);
+    btnGrayscale.addEventListener('click', applyGrayscale);
+    btnInvert.addEventListener('click', applyInvert);
+    btnToggleBgrRgb.addEventListener('click', applyToggleBgrRgb);
+    btnIsolateBlue.addEventListener('click', () => applyIsolateChannel(0));
+    btnIsolateGreen.addEventListener('click', () => applyIsolateChannel(1));
+    btnIsolateRed.addEventListener('click', () => applyIsolateChannel(2));
+    btnReset.addEventListener('click', resetState);
+
+    blueSlider.addEventListener('input', applyChannelAdjustment);
+    greenSlider.addEventListener('input', applyChannelAdjustment);
+    redSlider.addEventListener('input', applyChannelAdjustment);
+
+    btnExportPng.addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.download = 'converted_image.png';
+        link.href = procCanvas.toDataURL('image/png');
+        link.click();
+    });
+
+    btnExportJpg.addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.download = 'converted_image.jpg';
+        link.href = procCanvas.toDataURL('image/jpeg', 0.92);
+        link.click();
+    });
+
+    window.addEventListener('keydown', (e) => {
+        const key = e.key.toUpperCase();
+        if (key === 'G') applyGrayscale();
+        else if (key === 'I') applyInvert();
+        else if (key === 'T') applyToggleBgrRgb();
+        else if (key === '1') applyIsolateChannel(0);
+        else if (key === '2') applyIsolateChannel(1);
+        else if (key === '3') applyIsolateChannel(2);
+        else if (key === 'R') resetState();
+    });
+
+    // Initialize with benchmark pattern on load
+    drawBenchmarkPattern();
+</script>
+</body>
+</html>

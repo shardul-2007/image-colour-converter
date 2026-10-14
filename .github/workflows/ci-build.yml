@@ -1,0 +1,31 @@
+name: C++ CI Build & Automated Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    name: Build & Test on Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake libopencv-dev
+
+      - name: Configure CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build Executable
+        run: cmake --build build --config Release
+
+      - name: Run 14-Point Automated Self-Test
+        run: ./build/image_colour_converter --test assets/sample.png test_output
