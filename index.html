@@ -3,236 +3,396 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Colour Converter | Team 13 - NMIET</title>
+    <title>Chromatica Studio — Object-Oriented Image Colour Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0f172a;
-            --surface-color: #1e293b;
-            --surface-card: #334155;
-            --primary: #38bdf8;
-            --primary-hover: #0284c7;
-            --accent: #f59e0b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border: #475569;
-            --success: #10b981;
-            --danger: #ef4444;
+            --bg-void: #090a0f;
+            --bg-panel: #11141c;
+            --bg-elevated: #181c28;
+            --bg-glass: rgba(24, 28, 40, 0.75);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-focus: rgba(249, 115, 22, 0.5);
+            --copper: #f97316;
+            --copper-glow: rgba(249, 115, 22, 0.25);
+            --copper-light: #fb923c;
+            --teal: #14b8a6;
+            --teal-glow: rgba(20, 184, 166, 0.25);
+            --violet: #8b5cf6;
+            --rose: #f43f5e;
+            --text-title: #f8fafc;
+            --text-body: #cbd5e1;
+            --text-muted: #64748b;
+            --text-cream: #fbf7ee;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --radius-xl: 24px;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            background-color: var(--bg-void);
+            color: var(--text-body);
+            font-family: 'Space Grotesk', -apple-system, sans-serif;
             min-height: 100vh;
-            padding: 20px;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(249, 115, 22, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(20, 184, 166, 0.07) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.04) 0%, transparent 60%);
+            background-attachment: fixed;
         }
 
-        .container {
-            width: 100%;
-            max-width: 1280px;
-        }
-
+        /* Top Navigation Header */
         header {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
-            text-align: center;
-            position: relative;
+            width: 100%;
+            background: rgba(9, 10, 15, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-subtle);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 14px 28px;
         }
 
-        .badge {
-            display: inline-block;
-            background: rgba(56, 189, 248, 0.15);
-            color: var(--primary);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            padding: 4px 12px;
-            border-radius: 9999px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+        .nav-inner {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
         }
 
-        h1 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 6px;
-            letter-spacing: -0.025em;
+        .brand-block {
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
 
-        .subtitle {
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--copper) 0%, #d97706 50%, var(--teal) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 14px var(--copper-glow);
+            color: #000;
+            font-weight: 700;
             font-size: 1.1rem;
-            color: var(--text-muted);
-            margin-bottom: 14px;
         }
 
-        .meta-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        .brand-title {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-title h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-title);
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-title .tagline {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+        }
+
+        .header-meta {
+            display: flex;
+            align-items: center;
             gap: 12px;
-            margin-top: 14px;
-            padding-top: 14px;
-            border-top: 1px solid var(--border);
-            font-size: 0.9rem;
-            color: var(--text-muted);
+            font-size: 0.82rem;
         }
 
-        .meta-item strong {
-            color: var(--text-main);
+        .affiliation-pill {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            padding: 6px 14px;
+            border-radius: 9999px;
+            color: var(--text-body);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .github-link-btn {
+        .affiliation-pill .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--teal);
+            box-shadow: 0 0 8px var(--teal);
+        }
+
+        .repo-link {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: #24292e;
+            background: linear-gradient(135deg, #24292e 0%, #1a1e22 100%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 7px 16px;
+            border-radius: var(--radius-sm);
             color: #ffffff;
-            border: 1px solid #444d56;
-            padding: 8px 16px;
-            border-radius: 6px;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            margin-top: 12px;
-            transition: all 0.2s;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .github-link-btn:hover {
-            background: #2f363d;
-            border-color: #6a737d;
-            color: var(--primary);
+        .repo-link:hover {
+            border-color: var(--copper);
+            box-shadow: 0 0 16px var(--copper-glow);
+            transform: translateY(-1px);
         }
 
-        .main-layout {
+        /* Main Workspace Grid */
+        .workspace {
+            max-width: 1440px;
+            width: 100%;
+            margin: 24px auto;
+            padding: 0 24px;
             display: grid;
-            grid-template-columns: 340px 1fr;
+            grid-template-columns: 360px 1fr;
             gap: 24px;
+            flex: 1;
         }
 
-        @media (max-width: 960px) {
-            .main-layout {
+        @media (max-width: 1040px) {
+            .workspace {
                 grid-template-columns: 1fr;
             }
         }
 
-        .controls-card {
-            background: var(--surface-color);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+        /* Left Control Panel */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .panel-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            height: fit-content;
+            box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
         }
 
-        .section-title {
-            font-size: 1.1rem;
+        .panel-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, var(--border-subtle) 50%, transparent 100%);
+        }
+
+        .panel-card-title {
+            font-size: 0.85rem;
             font-weight: 700;
-            color: var(--primary);
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        button {
-            background: var(--surface-card);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s ease-in-out;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--copper-light);
             display: flex;
             align-items: center;
             justify-content: space-between;
+            margin-bottom: 14px;
         }
 
-        button:hover {
-            background: var(--primary);
-            color: #000000;
-            border-color: var(--primary);
+        .panel-card-title .count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 8px;
+            border-radius: 9999px;
+        }
+
+        /* File Dropper */
+        .dropzone {
+            border: 2px dashed rgba(255, 255, 255, 0.12);
+            border-radius: var(--radius-md);
+            padding: 18px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dropzone:hover, .dropzone.drag-active {
+            border-color: var(--copper);
+            background: rgba(249, 115, 22, 0.04);
+        }
+
+        .dropzone-icon {
+            font-size: 1.5rem;
+            color: var(--copper-light);
+        }
+
+        .dropzone-text {
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-title);
+        }
+
+        .dropzone-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Preset Chips */
+        .chip-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .chip-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-body);
+            padding: 8px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.15s ease;
+        }
+
+        .chip-btn:hover {
+            border-color: var(--copper);
+            color: #ffffff;
+            background: rgba(249, 115, 22, 0.1);
+        }
+
+        /* Action Buttons Matrix */
+        .btn-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .action-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-title);
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .action-btn .btn-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .action-btn .kbd-key {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--text-muted);
+        }
+
+        .action-btn:hover {
+            background: var(--copper);
+            color: #000;
+            border-color: var(--copper);
+            box-shadow: 0 4px 14px var(--copper-glow);
             transform: translateY(-1px);
         }
 
-        button:active {
-            transform: translateY(0);
+        .action-btn:hover .kbd-key {
+            background: rgba(0, 0, 0, 0.2);
+            color: #000;
+            border-color: rgba(0, 0, 0, 0.3);
         }
 
-        .btn-reset {
-            background: rgba(239, 68, 68, 0.15);
-            border-color: rgba(239, 68, 68, 0.4);
-            color: #fca5a5;
-        }
-
-        .btn-reset:hover {
-            background: var(--danger);
-            color: #ffffff;
-            border-color: var(--danger);
-        }
-
-        .btn-export {
-            background: rgba(16, 185, 129, 0.15);
-            border-color: rgba(16, 185, 129, 0.4);
-            color: #6ee7b7;
-        }
-
-        .btn-export:hover {
-            background: var(--success);
-            color: #000000;
-            border-color: var(--success);
-        }
-
-        .slider-group {
+        /* Channels Custom Sliders */
+        .slider-box {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
         }
 
-        .slider-item {
+        .channel-row {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
         }
 
-        .slider-header {
+        .channel-info {
             display: flex;
             justify-content: space-between;
-            font-size: 0.85rem;
+            align-items: center;
+            font-size: 0.8rem;
             font-weight: 600;
+        }
+
+        .channel-tag {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .channel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .slider-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
 
         input[type="range"] {
             -webkit-appearance: none;
             width: 100%;
-            height: 6px;
+            height: 5px;
             border-radius: 3px;
-            background: var(--surface-card);
+            background: rgba(255, 255, 255, 0.08);
             outline: none;
+            transition: background 0.2s;
         }
 
         input[type="range"]::-webkit-slider-thumb {
@@ -240,709 +400,1209 @@
             width: 16px;
             height: 16px;
             border-radius: 50%;
-            background: var(--primary);
+            background: #ffffff;
             cursor: pointer;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+            transition: transform 0.1s ease;
         }
 
-        .preview-area {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
         }
 
-        .canvas-grid {
+        #blueSlider::-webkit-slider-thumb { background: #38bdf8; }
+        #greenSlider::-webkit-slider-thumb { background: #4ade80; }
+        #redSlider::-webkit-slider-thumb { background: #f87171; }
+
+        /* Representation Note */
+        .callout-box {
+            background: rgba(20, 184, 166, 0.05);
+            border-left: 3px solid var(--teal);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            padding: 10px 12px;
+            font-size: 0.78rem;
+            color: #a7f3d0;
+            line-height: 1.45;
+        }
+
+        /* Reset and Export buttons */
+        .btn-reset {
+            background: rgba(244, 63, 94, 0.1);
+            border-color: rgba(244, 63, 94, 0.3);
+            color: #fda4af;
+        }
+
+        .btn-reset:hover {
+            background: var(--rose);
+            color: #ffffff;
+            border-color: var(--rose);
+            box-shadow: 0 4px 14px rgba(244, 63, 94, 0.3);
+        }
+
+        .export-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .btn-export {
+            background: rgba(20, 184, 166, 0.12);
+            border-color: rgba(20, 184, 166, 0.35);
+            color: #5eead4;
+        }
+
+        .btn-export:hover {
+            background: var(--teal);
+            color: #000;
+            border-color: var(--teal);
+            box-shadow: 0 4px 14px var(--teal-glow);
+        }
+
+        /* Right Preview Section */
+        .viewport-section {
+            display: flex;
+            flex-direction: column;
             gap: 20px;
         }
 
-        @media (max-width: 768px) {
-            .canvas-grid {
-                grid-template-columns: 1fr;
-            }
+        /* Compare Split Canvas Viewport */
+        .stage-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.5);
         }
 
-        .viewport-card {
-            background: var(--surface-color);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+        .stage-toolbar {
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .view-mode-tabs {
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 3px;
+            border-radius: var(--radius-sm);
+            gap: 4px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--bg-elevated);
+            color: var(--copper-light);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .mode-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .pulse-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(249, 115, 22, 0.12);
+            color: var(--copper-light);
+            border: 1px solid rgba(249, 115, 22, 0.25);
+            padding: 3px 10px;
+            border-radius: 9999px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+        }
+
+        .pulse-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--copper);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+
+        /* Interactive Canvas Display Area */
+        .stage-viewport {
+            min-height: 440px;
+            background: #08090d;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 24px 24px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            overflow: auto;
+        }
+
+        /* Split Curtain Container */
+        .split-container {
+            position: relative;
+            display: inline-block;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            line-height: 0;
+            user-select: none;
+        }
+
+        .split-canvas-orig {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .split-curtain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 50%;
+            overflow: hidden;
+            border-right: 2px solid var(--copper);
+            box-shadow: 2px 0 16px rgba(249, 115, 22, 0.4);
+        }
+
+        .split-curtain canvas {
+            display: block;
+            max-width: none;
+            height: 100%;
+        }
+
+        .split-handle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #ffffff;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+            cursor: ew-resize;
+            font-size: 0.85rem;
+            font-weight: 700;
+            pointer-events: none;
+        }
+
+        /* Side-by-side mode layout */
+        .dual-canvas-view {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .dual-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
 
-        .viewport-header {
-            padding: 12px 16px;
-            background: rgba(0, 0, 0, 0.2);
-            border-bottom: 1px solid var(--border);
+        .dual-card-header {
+            padding: 8px 14px;
+            background: var(--bg-elevated);
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-subtle);
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-            font-weight: 600;
         }
 
-        .canvas-wrapper {
-            padding: 16px;
+        .dual-card-body {
+            padding: 12px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            background: #090d16;
-            min-height: 280px;
-            overflow: auto;
-            position: relative;
+            justify-content: center;
         }
 
-        canvas {
+        .dual-card-body canvas {
             max-width: 100%;
             height: auto;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
             border-radius: 4px;
             cursor: crosshair;
         }
 
-        .inspector-panel {
-            background: var(--surface-color);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+        /* Pixel Inspector Loupe & Details Strip */
+        .inspector-strip {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
             padding: 16px 20px;
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 24px;
             align-items: center;
-            justify-content: space-between;
-            gap: 16px;
+            box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.4);
         }
 
-        .inspector-metric {
+        @media (max-width: 820px) {
+            .inspector-strip {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .swatch-group {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
         }
 
-        .color-swatch {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            border: 2px solid #ffffff;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-            background: #ffffff;
+        .swatch-preview {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            background: #ffff00;
+            transition: background 0.1s;
         }
 
-        .inspector-details {
+        .swatch-info {
             display: flex;
             flex-direction: column;
             gap: 2px;
         }
 
-        .inspector-details .label {
-            font-size: 0.75rem;
+        .swatch-info .coord {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
             color: var(--text-muted);
-            text-transform: uppercase;
+        }
+
+        .swatch-info .hex {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
             letter-spacing: 0.05em;
         }
 
-        .inspector-details .val {
-            font-family: monospace;
-            font-size: 1rem;
-            font-weight: 700;
-            color: #ffffff;
+        .channels-readout {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            padding: 0 16px;
+            border-left: 1px solid var(--border-subtle);
+            border-right: 1px solid var(--border-subtle);
         }
 
-        .architecture-banner {
-            background: var(--surface-color);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 24px;
+        @media (max-width: 600px) {
+            .channels-readout {
+                border: none;
+                padding: 0;
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .readout-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .readout-cell .lbl {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+        }
+
+        .readout-cell .val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-title);
+        }
+
+        .inspector-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            max-width: 140px;
+            text-align: right;
+            line-height: 1.35;
+        }
+
+        @media (max-width: 820px) {
+            .inspector-hint {
+                text-align: left;
+                max-width: none;
+            }
+        }
+
+        /* Engineering Architecture Cards */
+        .arch-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 16px;
+            margin-top: 10px;
         }
 
         .arch-card {
-            background: var(--surface-card);
-            border-radius: 8px;
-            padding: 14px;
-            border-left: 4px solid var(--primary);
-        }
-
-        .arch-card h4 {
-            color: var(--primary);
-            font-size: 0.95rem;
-            margin-bottom: 6px;
-        }
-
-        .arch-card p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
-        footer {
-            margin-top: 32px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: var(--text-muted);
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
             padding: 16px;
-            border-top: 1px solid var(--border);
-            width: 100%;
-        }
-
-        .file-input-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
             position: relative;
-            overflow: hidden;
-            display: inline-block;
-            width: 100%;
         }
 
-        .file-input-wrapper input[type="file"] {
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
+        .arch-card .cls-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--copper-light);
         }
 
-        .note-callout {
-            background: rgba(245, 158, 11, 0.1);
-            border-left: 4px solid var(--accent);
-            padding: 10px 14px;
-            border-radius: 0 8px 8px 0;
-            font-size: 0.82rem;
-            color: #fde68a;
+        .arch-card .cls-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
             line-height: 1.4;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: auto;
+            width: 100%;
+            background: rgba(9, 10, 15, 0.9);
+            border-top: 1px solid var(--border-subtle);
+            padding: 24px;
+            text-align: center;
+        }
+
+        .footer-inner {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .footer-inner a {
+            color: var(--copper);
+            text-decoration: none;
+        }
+
+        .footer-inner a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- Header -->
+    <!-- Header Navigation -->
     <header>
-        <span class="badge">Academic Review — Mini Project (OOP)</span>
-        <h1>Image Colour Converter</h1>
-        <p class="subtitle">An Object-Oriented Image Colour Conversion Application (C++17 / OpenCV 4.x Architecture)</p>
+        <div class="nav-inner">
+            <div class="brand-block">
+                <div class="brand-mark">C</div>
+                <div class="brand-title">
+                    <h1>Chromatica Studio <span style="font-size: 0.75rem; font-weight: 400; color: var(--copper);">v1.0</span></h1>
+                    <span class="tagline">C++17 & OpenCV Object-Oriented Mini Project (Team 13)</span>
+                </div>
+            </div>
 
-        <div class="meta-grid">
-            <div class="meta-item"><strong>Team:</strong> Team 13</div>
-            <div class="meta-item"><strong>Department:</strong> Information Technology</div>
-            <div class="meta-item"><strong>Institute:</strong> NMIET, Pune</div>
-            <div class="meta-item"><strong>Members:</strong> Parihar Shardul & Wankhade Ishan</div>
+            <div class="header-meta">
+                <div class="affiliation-pill">
+                    <span class="dot"></span>
+                    <span>NMIET Department of IT — First Review</span>
+                </div>
+
+                <a href="https://github.com/shardul-2007/image-colour-converter" target="_blank" rel="noopener noreferrer" class="repo-link">
+                    <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                    </svg>
+                    GitHub Repository
+                </a>
+            </div>
         </div>
-
-        <a href="https://github.com/shardul-2007/image-colour-converter" target="_blank" rel="noopener noreferrer" class="github-link-btn">
-            <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
-            </svg>
-            View C++ Source Code on GitHub
-        </a>
     </header>
 
     <!-- Main Workspace -->
-    <div class="main-layout">
+    <main class="workspace">
         <!-- Controls Sidebar -->
-        <aside class="controls-card">
-            <div class="section-title">
-                <span>📁 Image Input</span>
-            </div>
-
-            <div class="file-input-wrapper">
-                <button type="button">
-                    <span>Choose Image File...</span>
-                    <span>📂</span>
-                </button>
-                <input type="file" id="imageInput" accept="image/png, image/jpeg, image/jpg, image/bmp">
-            </div>
-
-            <button type="button" id="btnLoadSample">
-                <span>Load Test Pattern</span>
-                <span>🎨</span>
-            </button>
-
-            <div class="section-title">
-                <span>⚙️ Colour Transformations</span>
-            </div>
-
-            <div class="btn-group">
-                <button type="button" id="btnGrayscale">
-                    <span>Grayscale (BT.601)</span>
-                    <kbd>G</kbd>
-                </button>
-                <button type="button" id="btnInvert">
-                    <span>Invert Colours</span>
-                    <kbd>I</kbd>
-                </button>
-                <button type="button" id="btnToggleBgrRgb">
-                    <span>Toggle BGR / RGB</span>
-                    <kbd>T</kbd>
-                </button>
-            </div>
-
-            <div class="section-title">
-                <span>🎚️ Channel Isolation</span>
-            </div>
-            <div class="btn-group">
-                <button type="button" id="btnIsolateBlue">
-                    <span>Isolate Blue</span>
-                    <kbd>1</kbd>
-                </button>
-                <button type="button" id="btnIsolateGreen">
-                    <span>Isolate Green</span>
-                    <kbd>2</kbd>
-                </button>
-                <button type="button" id="btnIsolateRed">
-                    <span>Isolate Red</span>
-                    <kbd>3</kbd>
-                </button>
-            </div>
-
-            <div class="section-title">
-                <span>🎛️ Channel Tuning</span>
-            </div>
-
-            <div class="slider-group">
-                <div class="slider-item">
-                    <div class="slider-header">
-                        <span style="color: #60a5fa;">Blue Intensity</span>
-                        <span id="blueVal">100%</span>
-                    </div>
-                    <input type="range" id="blueSlider" min="0" max="200" value="100">
+        <aside class="sidebar">
+            <!-- Source Input Card -->
+            <div class="panel-card">
+                <div class="panel-card-title">
+                    <span>Source Image</span>
+                    <span class="count" id="imageDimBadge">400 x 300</span>
                 </div>
-                <div class="slider-item">
-                    <div class="slider-header">
-                        <span style="color: #4ade80;">Green Intensity</span>
-                        <span id="greenVal">100%</span>
-                    </div>
-                    <input type="range" id="greenSlider" min="0" max="200" value="100">
+
+                <div class="dropzone" id="dropzone">
+                    <span class="dropzone-icon">⇪</span>
+                    <span class="dropzone-text">Drop image or click to browse</span>
+                    <span class="dropzone-hint">Supports PNG, JPG, JPEG, BMP</span>
+                    <input type="file" id="fileInput" accept="image/png, image/jpeg, image/jpg, image/bmp" style="display: none;">
                 </div>
-                <div class="slider-item">
-                    <div class="slider-header">
-                        <span style="color: #f87171;">Red Intensity</span>
-                        <span id="redVal">100%</span>
-                    </div>
-                    <input type="range" id="redSlider" min="0" max="200" value="100">
+
+                <div class="chip-grid">
+                    <button class="chip-btn" id="btnBenchmarkPattern">
+                        <span>Benchmark Pattern</span>
+                        <span>🎨</span>
+                    </button>
+                    <button class="chip-btn" id="btnSampleSunset">
+                        <span>Vibrant Landscape</span>
+                        <span>🌄</span>
+                    </button>
                 </div>
             </div>
 
-            <div class="note-callout">
-                <strong>Memory vs. Space Note:</strong> BGR/RGB toggle modifies channel byte ordering in memory, not perceptual color spaces (e.g. HSV/CIELAB).
+            <!-- Operations Matrix -->
+            <div class="panel-card">
+                <div class="panel-card-title">
+                    <span>Transformations</span>
+                    <span class="count">Colour Engine</span>
+                </div>
+
+                <div class="btn-stack">
+                    <button class="action-btn" id="btnGrayscale">
+                        <span class="btn-label">
+                            <span style="color: var(--teal);">●</span>
+                            <span>Grayscale (ITU-R BT.601)</span>
+                        </span>
+                        <span class="kbd-key">G</span>
+                    </button>
+
+                    <button class="action-btn" id="btnInvert">
+                        <span class="btn-label">
+                            <span style="color: var(--violet);">●</span>
+                            <span>Invert Intensities (Negative)</span>
+                        </span>
+                        <span class="kbd-key">I</span>
+                    </button>
+
+                    <button class="action-btn" id="btnToggleBgrRgb">
+                        <span class="btn-label">
+                            <span style="color: var(--copper);">●</span>
+                            <span>Toggle BGR ↔ RGB Memory</span>
+                        </span>
+                        <span class="kbd-key">T</span>
+                    </button>
+                </div>
             </div>
 
-            <div class="section-title">
-                <span>💾 Actions & Export</span>
+            <!-- Channel Isolator -->
+            <div class="panel-card">
+                <div class="panel-card-title">
+                    <span>Isolate Channel</span>
+                    <span class="count">Mask 0</span>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                    <button class="action-btn" id="btnIsolateBlue" style="justify-content: center; padding: 10px 4px;">
+                        <span style="color: #38bdf8; font-weight: 700;">Blue (1)</span>
+                    </button>
+                    <button class="action-btn" id="btnIsolateGreen" style="justify-content: center; padding: 10px 4px;">
+                        <span style="color: #4ade80; font-weight: 700;">Green (2)</span>
+                    </button>
+                    <button class="action-btn" id="btnIsolateRed" style="justify-content: center; padding: 10px 4px;">
+                        <span style="color: #f87171; font-weight: 700;">Red (3)</span>
+                    </button>
+                </div>
             </div>
 
-            <div class="btn-group">
-                <button type="button" id="btnReset" class="btn-reset">
-                    <span>Reset to Original</span>
-                    <kbd>R</kbd>
-                </button>
-                <button type="button" id="btnExportPng" class="btn-export">
-                    <span>Export PNG</span>
-                    <span>📥</span>
-                </button>
-                <button type="button" id="btnExportJpg" class="btn-export">
-                    <span>Export JPEG</span>
-                    <span>📥</span>
-                </button>
+            <!-- Custom Channel Tuning -->
+            <div class="panel-card">
+                <div class="panel-card-title">
+                    <span>Channel Tuning</span>
+                    <span class="count">Scale Factors</span>
+                </div>
+
+                <div class="slider-box">
+                    <div class="channel-row">
+                        <div class="channel-info">
+                            <span class="channel-tag">
+                                <span class="channel-dot" style="background: #38bdf8;"></span>
+                                <span>Blue Channel</span>
+                            </span>
+                            <span class="slider-val" id="blueNum">1.00x</span>
+                        </div>
+                        <input type="range" id="blueSlider" min="0" max="200" value="100">
+                    </div>
+
+                    <div class="channel-row">
+                        <div class="channel-info">
+                            <span class="channel-tag">
+                                <span class="channel-dot" style="background: #4ade80;"></span>
+                                <span>Green Channel</span>
+                            </span>
+                            <span class="slider-val" id="greenNum">1.00x</span>
+                        </div>
+                        <input type="range" id="greenSlider" min="0" max="200" value="100">
+                    </div>
+
+                    <div class="channel-row">
+                        <div class="channel-info">
+                            <span class="channel-tag">
+                                <span class="channel-dot" style="background: #f87171;"></span>
+                                <span>Red Channel</span>
+                            </span>
+                            <span class="slider-val" id="redNum">1.00x</span>
+                        </div>
+                        <input type="range" id="redSlider" min="0" max="200" value="100">
+                    </div>
+
+                    <div class="callout-box">
+                        <strong>Architecture Distinction:</strong> BGR/RGB toggle swaps memory byte offsets ($B \leftrightarrow R$). It does not perform a perceptual color-space transform.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export and Reset -->
+            <div class="panel-card">
+                <div class="panel-card-title">
+                    <span>Actions</span>
+                    <span class="count">I/O</span>
+                </div>
+
+                <div class="btn-stack">
+                    <button class="action-btn btn-reset" id="btnReset">
+                        <span class="btn-label">
+                            <span>↺ Reset to Original</span>
+                        </span>
+                        <span class="kbd-key" style="background: rgba(0,0,0,0.2);">R</span>
+                    </button>
+
+                    <div class="export-row">
+                        <button class="action-btn btn-export" id="btnExportPng" style="justify-content: center;">
+                            <span>Export PNG</span>
+                        </button>
+                        <button class="action-btn btn-export" id="btnExportJpg" style="justify-content: center;">
+                            <span>Export JPEG</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </aside>
 
-        <!-- Preview Viewport -->
-        <main class="preview-area">
-            <div class="canvas-grid">
-                <!-- Original Canvas -->
-                <div class="viewport-card">
-                    <div class="viewport-header">
-                        <span>Original Image (Pristine)</span>
-                        <span id="origDimensions" style="color: var(--text-muted);">400 x 300</span>
+        <!-- Main Viewport Section -->
+        <section class="viewport-section">
+            <!-- Canvas Display Card -->
+            <div class="stage-card">
+                <div class="stage-toolbar">
+                    <div class="view-mode-tabs">
+                        <button class="tab-btn active" id="tabSplit">Before / After Split</button>
+                        <button class="tab-btn" id="tabDual">Side-by-Side Dual</button>
                     </div>
-                    <div class="canvas-wrapper">
-                        <canvas id="origCanvas" width="400" height="300"></canvas>
+
+                    <div class="mode-indicator">
+                        <span style="color: var(--text-muted);">Active Mode:</span>
+                        <span class="pulse-badge">
+                            <span class="pulse-dot"></span>
+                            <span id="activeModeLabel">Pristine Original</span>
+                        </span>
                     </div>
                 </div>
 
-                <!-- Converted Canvas -->
-                <div class="viewport-card">
-                    <div class="viewport-header">
-                        <span>Converted Image Preview</span>
-                        <span id="activeModeBadge" class="badge" style="margin: 0; padding: 2px 8px; font-size: 0.75rem;">Original</span>
+                <div class="stage-viewport" id="stageViewport">
+                    <!-- Split Curtain Mode -->
+                    <div class="split-container" id="splitContainer">
+                        <canvas id="canvasConverted" class="split-canvas-orig" width="400" height="300"></canvas>
+                        <div class="split-curtain" id="splitCurtain">
+                            <canvas id="canvasOriginal" width="400" height="300"></canvas>
+                        </div>
+                        <div class="split-handle" id="splitHandle">⇄</div>
                     </div>
-                    <div class="canvas-wrapper">
-                        <canvas id="procCanvas" width="400" height="300"></canvas>
+
+                    <!-- Dual Side-by-Side Mode -->
+                    <div class="dual-canvas-view" id="dualContainer">
+                        <div class="dual-card">
+                            <div class="dual-card-header">
+                                <span>Pristine Original (BGR)</span>
+                                <span id="dualOrigDim">400 x 300</span>
+                            </div>
+                            <div class="dual-card-body">
+                                <canvas id="canvasDualOrig" width="400" height="300"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="dual-card">
+                            <div class="dual-card-header">
+                                <span>Converted Output</span>
+                                <span id="dualProcMode" style="color: var(--copper);">Original</span>
+                            </div>
+                            <div class="dual-card-body">
+                                <canvas id="canvasDualProc" width="400" height="300"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Pixel Inspector HUD -->
-            <div class="inspector-panel">
-                <div class="inspector-metric">
-                    <div class="color-swatch" id="inspectorSwatch"></div>
-                    <div class="inspector-details">
-                        <span class="label">Pixel Coordinate</span>
-                        <span class="val" id="inspectorCoord">(X: 200, Y: 150)</span>
+            <!-- Pixel Inspector Strip -->
+            <div class="inspector-strip">
+                <div class="swatch-group">
+                    <div class="swatch-preview" id="inspectorSwatch"></div>
+                    <div class="swatch-info">
+                        <span class="coord" id="inspectorCoord">Pos: (200, 150)</span>
+                        <span class="hex" id="inspectorHex">#FFFF00</span>
                     </div>
                 </div>
 
-                <div class="inspector-details">
-                    <span class="label">Channel Values (B, G, R)</span>
-                    <span class="val" id="inspectorBgr">B: 0 | G: 255 | R: 255</span>
+                <div class="channels-readout">
+                    <div class="readout-cell">
+                        <span class="lbl" style="color: #38bdf8;">Blue Channel</span>
+                        <span class="val" id="readoutBlue">0</span>
+                    </div>
+                    <div class="readout-cell">
+                        <span class="lbl" style="color: #4ade80;">Green Channel</span>
+                        <span class="val" id="readoutGreen">255</span>
+                    </div>
+                    <div class="readout-cell">
+                        <span class="lbl" style="color: #f87171;">Red Channel</span>
+                        <span class="val" id="readoutRed">255</span>
+                    </div>
+                    <div class="readout-cell">
+                        <span class="lbl" style="color: var(--copper-light);">BT.601 Luma</span>
+                        <span class="val" id="readoutLuma">225.9</span>
+                    </div>
                 </div>
 
-                <div class="inspector-details">
-                    <span class="label">Hex Color Code</span>
-                    <span class="val" id="inspectorHex" style="color: var(--primary);">#FFFF00</span>
-                </div>
-
-                <div class="inspector-details">
-                    <span class="label">Perceptual Luminance (BT.601)</span>
-                    <span class="val" id="inspectorLuma">225.9 / 255</span>
+                <div class="inspector-hint">
+                    Click anywhere on the image to inspect coordinates & colors.
                 </div>
             </div>
 
-            <!-- Architectural Mapping -->
-            <div class="architecture-banner">
+            <!-- Architectural Blueprint Cards -->
+            <div class="arch-grid">
                 <div class="arch-card">
-                    <h4>ImageManager Class</h4>
-                    <p>Encapsulates the pristine original image data and provides bounds-checked metadata inspection.</p>
+                    <span class="cls-name">ImageManager</span>
+                    <span class="cls-desc">Safely decodes and stores immutable pristine matrices with bounds-checked pixel inspection.</span>
                 </div>
                 <div class="arch-card">
-                    <h4>ColourProcessor Class</h4>
-                    <p>Applies non-destructive mathematical transforms (BT.601 grayscale, inversion, channel isolation/scaling).</p>
+                    <span class="cls-name">ColourProcessor</span>
+                    <span class="cls-desc">Pure mathematical engine executing BT.601 luminance, bitwise inversion, and channel scaling without side-effects.</span>
                 </div>
                 <div class="arch-card">
-                    <h4>OutputManager Class</h4>
-                    <p>Validates file formats and performs image serialization for PNG/JPEG export without data corruption.</p>
+                    <span class="cls-name">OutputManager</span>
+                    <span class="cls-desc">Validates formats (`.png`, `.jpg`, `.jpeg`, `.bmp`), creates target directories, and writes matrices safely.</span>
                 </div>
                 <div class="arch-card">
-                    <h4>ImageConverterApp Class</h4>
-                    <p>Coordinates system state, dispatches user actions, and manages the interactive Pixel Inspector HUD.</p>
+                    <span class="cls-name">ImageConverterApp</span>
+                    <span class="cls-desc">Coordinates UI states, mouse callbacks, keyboard events, and automated test suite execution.</span>
                 </div>
             </div>
-        </main>
-    </div>
+        </section>
+    </main>
 
     <!-- Footer -->
     <footer>
-        <p>Image Colour Converter — First Review Mini Project (OOP) | Department of Information Technology, NMIET</p>
-        <p>Developed by Team 13: Parihar Shardul Rajendra (SEITB243) & Wankhade Ishan Vijay (SEITB266)</p>
+        <div class="footer-inner">
+            <div>
+                <strong>Image Colour Converter</strong> — Academic Mini Project (OOP) | NMIET, Pune
+            </div>
+            <div>
+                Engineered by <strong>Team 13</strong>: Parihar Shardul Rajendra (SEITB243) & Wankhade Ishan Vijay (SEITB266)
+            </div>
+            <div>
+                <a href="https://github.com/shardul-2007/image-colour-converter" target="_blank" rel="noopener noreferrer">GitHub Repository</a> • 
+                <a href="https://github.com/shardul-2007/image-colour-converter/blob/main/docs/first-review.md" target="_blank" rel="noopener noreferrer">First Review Document</a>
+            </div>
+        </div>
     </footer>
-</div>
 
-<script>
-    // Elements
-    const origCanvas = document.getElementById('origCanvas');
-    const procCanvas = document.getElementById('procCanvas');
-    const origCtx = origCanvas.getContext('2d', { willReadFrequently: true });
-    const procCtx = procCanvas.getContext('2d', { willReadFrequently: true });
+    <script>
+        // DOM Elements
+        const canvasOriginal = document.getElementById('canvasOriginal');
+        const canvasConverted = document.getElementById('canvasConverted');
+        const canvasDualOrig = document.getElementById('canvasDualOrig');
+        const canvasDualProc = document.getElementById('canvasDualProc');
+        const ctxOrig = canvasOriginal.getContext('2d', { willReadFrequently: true });
+        const ctxConv = canvasConverted.getContext('2d', { willReadFrequently: true });
+        const ctxDualOrig = canvasDualOrig.getContext('2d', { willReadFrequently: true });
+        const ctxDualProc = canvasDualProc.getContext('2d', { willReadFrequently: true });
 
-    const imageInput = document.getElementById('imageInput');
-    const btnLoadSample = document.getElementById('btnLoadSample');
-    const btnGrayscale = document.getElementById('btnGrayscale');
-    const btnInvert = document.getElementById('btnInvert');
-    const btnToggleBgrRgb = document.getElementById('btnToggleBgrRgb');
-    const btnIsolateBlue = document.getElementById('btnIsolateBlue');
-    const btnIsolateGreen = document.getElementById('btnIsolateGreen');
-    const btnIsolateRed = document.getElementById('btnIsolateRed');
-    const btnReset = document.getElementById('btnReset');
-    const btnExportPng = document.getElementById('btnExportPng');
-    const btnExportJpg = document.getElementById('btnExportJpg');
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('fileInput');
+        const btnBenchmarkPattern = document.getElementById('btnBenchmarkPattern');
+        const btnSampleSunset = document.getElementById('btnSampleSunset');
 
-    const blueSlider = document.getElementById('blueSlider');
-    const greenSlider = document.getElementById('greenSlider');
-    const redSlider = document.getElementById('redSlider');
-    const blueVal = document.getElementById('blueVal');
-    const greenVal = document.getElementById('greenVal');
-    const redVal = document.getElementById('redVal');
+        const btnGrayscale = document.getElementById('btnGrayscale');
+        const btnInvert = document.getElementById('btnInvert');
+        const btnToggleBgrRgb = document.getElementById('btnToggleBgrRgb');
+        const btnIsolateBlue = document.getElementById('btnIsolateBlue');
+        const btnIsolateGreen = document.getElementById('btnIsolateGreen');
+        const btnIsolateRed = document.getElementById('btnIsolateRed');
+        const btnReset = document.getElementById('btnReset');
+        const btnExportPng = document.getElementById('btnExportPng');
+        const btnExportJpg = document.getElementById('btnExportJpg');
 
-    const origDimensions = document.getElementById('origDimensions');
-    const activeModeBadge = document.getElementById('activeModeBadge');
+        const blueSlider = document.getElementById('blueSlider');
+        const greenSlider = document.getElementById('greenSlider');
+        const redSlider = document.getElementById('redSlider');
+        const blueNum = document.getElementById('blueNum');
+        const greenNum = document.getElementById('greenNum');
+        const redNum = document.getElementById('redNum');
 
-    const inspectorSwatch = document.getElementById('inspectorSwatch');
-    const inspectorCoord = document.getElementById('inspectorCoord');
-    const inspectorBgr = document.getElementById('inspectorBgr');
-    const inspectorHex = document.getElementById('inspectorHex');
-    const inspectorLuma = document.getElementById('inspectorLuma');
+        const imageDimBadge = document.getElementById('imageDimBadge');
+        const activeModeLabel = document.getElementById('activeModeLabel');
+        const dualOrigDim = document.getElementById('dualOrigDim');
+        const dualProcMode = document.getElementById('dualProcMode');
 
-    // App State (Mirroring C++ ImageConverterApp)
-    let pristineImageData = null;
-    let isRgbRepresentation = false;
-    let currentMode = "Original";
+        const inspectorSwatch = document.getElementById('inspectorSwatch');
+        const inspectorCoord = document.getElementById('inspectorCoord');
+        const inspectorHex = document.getElementById('inspectorHex');
+        const readoutBlue = document.getElementById('readoutBlue');
+        const readoutGreen = document.getElementById('readoutGreen');
+        const readoutRed = document.getElementById('readoutRed');
+        const readoutLuma = document.getElementById('readoutLuma');
 
-    // 1. Draw Default Benchmark Pattern
-    function drawBenchmarkPattern() {
-        const w = 400, h = 300;
-        origCanvas.width = w;
-        origCanvas.height = h;
-        procCanvas.width = w;
-        procCanvas.height = h;
+        const tabSplit = document.getElementById('tabSplit');
+        const tabDual = document.getElementById('tabDual');
+        const splitContainer = document.getElementById('splitContainer');
+        const dualContainer = document.getElementById('dualContainer');
+        const splitCurtain = document.getElementById('splitCurtain');
+        const splitHandle = document.getElementById('splitHandle');
 
-        // Top-Left: Red
-        origCtx.fillStyle = '#FF0000';
-        origCtx.fillRect(0, 0, w / 2, h / 2);
-        // Top-Right: Green
-        origCtx.fillStyle = '#00FF00';
-        origCtx.fillRect(w / 2, 0, w / 2, h / 2);
-        // Bottom-Left: Blue
-        origCtx.fillStyle = '#0000FF';
-        origCtx.fillRect(0, h / 2, w / 2, h / 2);
-        // Bottom-Right: Gray
-        origCtx.fillStyle = '#808080';
-        origCtx.fillRect(w / 2, h / 2, w / 2, h / 2);
+        // Internal State
+        let pristinePixels = null;
+        let isRgbRepresentation = false;
+        let activeMode = "Pristine Original";
+        let isDualView = false;
+        let isDraggingSplit = false;
 
-        // Center Yellow Ring
-        origCtx.beginPath();
-        origCtx.arc(w / 2, h / 2, 45, 0, Math.PI * 2);
-        origCtx.fillStyle = '#FFFF00';
-        origCtx.fill();
-        origCtx.lineWidth = 2;
-        origCtx.strokeStyle = '#000000';
-        origCtx.stroke();
+        // 1. Generate College Benchmark Pattern (Lossless, predictable RGB quadrants)
+        function renderBenchmarkPattern() {
+            const w = 400, h = 300;
+            setDimensions(w, h);
 
-        // Inner White Dot
-        origCtx.beginPath();
-        origCtx.arc(w / 2, h / 2, 20, 0, Math.PI * 2);
-        origCtx.fillStyle = '#FFFFFF';
-        origCtx.fill();
+            // Quadrants
+            ctxOrig.fillStyle = '#FF0000'; // TL: Red
+            ctxOrig.fillRect(0, 0, w / 2, h / 2);
 
-        pristineImageData = origCtx.getImageData(0, 0, w, h);
-        resetState();
-        inspectAt(w / 2, h / 2);
-    }
+            ctxOrig.fillStyle = '#00FF00'; // TR: Green
+            ctxOrig.fillRect(w / 2, 0, w / 2, h / 2);
 
-    function resetState() {
-        currentMode = "Original";
-        isRgbRepresentation = false;
-        blueSlider.value = 100;
-        greenSlider.value = 100;
-        redSlider.value = 100;
-        blueVal.innerText = "100%";
-        greenVal.innerText = "100%";
-        redVal.innerText = "100%";
-        activeModeBadge.innerText = "Original";
-        activeModeBadge.style.background = "rgba(56, 189, 248, 0.15)";
-        activeModeBadge.style.color = "var(--primary)";
+            ctxOrig.fillStyle = '#0000FF'; // BL: Blue
+            ctxOrig.fillRect(0, h / 2, w / 2, h / 2);
 
-        if (pristineImageData) {
-            procCtx.putImageData(pristineImageData, 0, 0);
-            origDimensions.innerText = `${pristineImageData.width} x ${pristineImageData.height}`;
-        }
-    }
+            ctxOrig.fillStyle = '#808080'; // BR: Gray
+            ctxOrig.fillRect(w / 2, h / 2, w / 2, h / 2);
 
-    // 2. Transformations (Mirroring ColourProcessor)
-    function applyGrayscale() {
-        if (!pristineImageData) return;
-        const w = pristineImageData.width;
-        const h = pristineImageData.height;
-        const src = pristineImageData.data;
-        const output = procCtx.createImageData(w, h);
-        const dst = output.data;
+            // Center Disc (Yellow)
+            ctxOrig.beginPath();
+            ctxOrig.arc(w / 2, h / 2, 45, 0, Math.PI * 2);
+            ctxOrig.fillStyle = '#FFFF00';
+            ctxOrig.fill();
+            ctxOrig.lineWidth = 2;
+            ctxOrig.strokeStyle = '#000000';
+            ctxOrig.stroke();
 
-        for (let i = 0; i < src.length; i += 4) {
-            const r = src[i];
-            const g = src[i + 1];
-            const b = src[i + 2];
-            // ITU-R BT.601 luminance weighting
-            const gray = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
-            dst[i] = gray;
-            dst[i + 1] = gray;
-            dst[i + 2] = gray;
-            dst[i + 3] = src[i + 3];
+            // Inner Disc (White)
+            ctxOrig.beginPath();
+            ctxOrig.arc(w / 2, h / 2, 18, 0, Math.PI * 2);
+            ctxOrig.fillStyle = '#FFFFFF';
+            ctxOrig.fill();
+
+            finalizeImageLoad();
         }
 
-        procCtx.putImageData(output, 0, 0);
-        currentMode = "Grayscale (BT.601)";
-        activeModeBadge.innerText = currentMode;
-    }
+        // 2. Generate Sample Sunset Landscape (Rich gradients)
+        function renderSampleSunset() {
+            const w = 480, h = 320;
+            setDimensions(w, h);
 
-    function applyInvert() {
-        const current = procCtx.getImageData(0, 0, procCanvas.width, procCanvas.height);
-        const data = current.data;
-        for (let i = 0; i < data.length; i += 4) {
-            data[i] = 255 - data[i];         // R
-            data[i + 1] = 255 - data[i + 1]; // G
-            data[i + 2] = 255 - data[i + 2]; // B
-        }
-        procCtx.putImageData(current, 0, 0);
-        currentMode = "Inverted Colours";
-        activeModeBadge.innerText = currentMode;
-    }
+            // Sky gradient
+            const sky = ctxOrig.createLinearGradient(0, 0, 0, h * 0.7);
+            sky.addColorStop(0, '#1e1b4b');
+            sky.addColorStop(0.3, '#701a75');
+            sky.addColorStop(0.65, '#ea580c');
+            sky.addColorStop(1, '#fde047');
+            ctxOrig.fillStyle = sky;
+            ctxOrig.fillRect(0, 0, w, h);
 
-    function applyToggleBgrRgb() {
-        const current = procCtx.getImageData(0, 0, procCanvas.width, procCanvas.height);
-        const data = current.data;
-        // Swap Channel 0 (Red) and Channel 2 (Blue) in memory representation
-        for (let i = 0; i < data.length; i += 4) {
-            const temp = data[i];
-            data[i] = data[i + 2];
-            data[i + 2] = temp;
-        }
-        procCtx.putImageData(current, 0, 0);
-        isRgbRepresentation = !isRgbRepresentation;
-        currentMode = isRgbRepresentation ? "RGB Memory Layout" : "Default BGR Layout";
-        activeModeBadge.innerText = currentMode;
-    }
+            // Glowing sun
+            ctxOrig.beginPath();
+            ctxOrig.arc(w * 0.6, h * 0.55, 36, 0, Math.PI * 2);
+            ctxOrig.fillStyle = '#fff7ed';
+            ctxOrig.shadowColor = '#fb923c';
+            ctxOrig.shadowBlur = 40;
+            ctxOrig.fill();
+            ctxOrig.shadowBlur = 0;
 
-    function applyIsolateChannel(channelIdx) {
-        if (!pristineImageData) return;
-        const w = pristineImageData.width;
-        const h = pristineImageData.height;
-        const src = pristineImageData.data;
-        const output = procCtx.createImageData(w, h);
-        const dst = output.data;
+            // Water reflection
+            const water = ctxOrig.createLinearGradient(0, h * 0.7, 0, h);
+            water.addColorStop(0, '#c2410c');
+            water.addColorStop(1, '#0f172a');
+            ctxOrig.fillStyle = water;
+            ctxOrig.fillRect(0, h * 0.7, w, h * 0.3);
 
-        for (let i = 0; i < src.length; i += 4) {
-            dst[i] = (channelIdx === 2) ? src[i] : 0;         // Red
-            dst[i + 1] = (channelIdx === 1) ? src[i + 1] : 0; // Green
-            dst[i + 2] = (channelIdx === 0) ? src[i + 2] : 0; // Blue
-            dst[i + 3] = src[i + 3];
+            // Mountain silouettes
+            ctxOrig.beginPath();
+            ctxOrig.moveTo(0, h * 0.7);
+            ctxOrig.lineTo(w * 0.25, h * 0.5);
+            ctxOrig.lineTo(w * 0.5, h * 0.7);
+            ctxOrig.lineTo(w * 0.75, h * 0.55);
+            ctxOrig.lineTo(w, h * 0.7);
+            ctxOrig.closePath();
+            ctxOrig.fillStyle = '#1c1917';
+            ctxOrig.fill();
+
+            finalizeImageLoad();
         }
 
-        procCtx.putImageData(output, 0, 0);
-        currentMode = `Isolated ${channelIdx === 0 ? "Blue" : channelIdx === 1 ? "Green" : "Red"}`;
-        activeModeBadge.innerText = currentMode;
-    }
+        function setDimensions(w, h) {
+            canvasOriginal.width = w;
+            canvasOriginal.height = h;
+            canvasConverted.width = w;
+            canvasConverted.height = h;
+            canvasDualOrig.width = w;
+            canvasDualOrig.height = h;
+            canvasDualProc.width = w;
+            canvasDualProc.height = h;
 
-    function applyChannelAdjustment() {
-        if (!pristineImageData) return;
-        const bScale = parseInt(blueSlider.value, 10) / 100.0;
-        const gScale = parseInt(greenSlider.value, 10) / 100.0;
-        const rScale = parseInt(redSlider.value, 10) / 100.0;
-
-        blueVal.innerText = `${blueSlider.value}%`;
-        greenVal.innerText = `${greenSlider.value}%`;
-        redVal.innerText = `${redSlider.value}%`;
-
-        const w = pristineImageData.width;
-        const h = pristineImageData.height;
-        const src = pristineImageData.data;
-        const output = procCtx.createImageData(w, h);
-        const dst = output.data;
-
-        for (let i = 0; i < src.length; i += 4) {
-            dst[i] = Math.min(255, Math.max(0, Math.round(src[i] * rScale)));
-            dst[i + 1] = Math.min(255, Math.max(0, Math.round(src[i + 1] * gScale)));
-            dst[i + 2] = Math.min(255, Math.max(0, Math.round(src[i + 2] * bScale)));
-            dst[i + 3] = src[i + 3];
+            imageDimBadge.innerText = `${w} x ${h}`;
+            dualOrigDim.innerText = `${w} x ${h}`;
         }
 
-        procCtx.putImageData(output, 0, 0);
-        currentMode = "Channel Tuned";
-        activeModeBadge.innerText = currentMode;
-    }
+        function finalizeImageLoad() {
+            pristinePixels = ctxOrig.getImageData(0, 0, canvasOriginal.width, canvasOriginal.height);
+            // Copy to dual original
+            ctxDualOrig.putImageData(pristinePixels, 0, 0);
+            resetAll();
+            inspectAt(Math.floor(canvasOriginal.width / 2), Math.floor(canvasOriginal.height / 2));
+        }
 
-    // 3. Pixel Inspector
-    function inspectAt(x, y) {
-        if (x < 0 || x >= procCanvas.width || y < 0 || y >= procCanvas.height) return;
-        const pixel = procCtx.getImageData(x, y, 1, 1).data;
-        const r = pixel[0];
-        const g = pixel[1];
-        const b = pixel[2];
+        function resetAll() {
+            activeMode = "Pristine Original";
+            isRgbRepresentation = false;
+            blueSlider.value = 100;
+            greenSlider.value = 100;
+            redSlider.value = 100;
+            blueNum.innerText = "1.00x";
+            greenNum.innerText = "1.00x";
+            redNum.innerText = "1.00x";
 
-        // Format Hex
-        const hex = "#" + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('').toUpperCase();
-        // Compute Luma
-        const luma = (0.299 * r + 0.587 * g + 0.114 * b).toFixed(1);
+            activeModeLabel.innerText = activeMode;
+            dualProcMode.innerText = activeMode;
 
-        inspectorSwatch.style.backgroundColor = hex;
-        inspectorCoord.innerText = `(X: ${x}, Y: ${y})`;
-        inspectorBgr.innerText = `B: ${b} | G: ${g} | R: ${r}`;
-        inspectorHex.innerText = hex;
-        inspectorLuma.innerText = `${luma} / 255`;
-    }
+            if (pristinePixels) {
+                ctxConv.putImageData(pristinePixels, 0, 0);
+                ctxDualProc.putImageData(pristinePixels, 0, 0);
+            }
+        }
 
-    function setupCanvasInspection(canvas) {
-        canvas.addEventListener('click', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-            const x = Math.floor((e.clientX - rect.left) * scaleX);
-            const y = Math.floor((e.clientY - rect.top) * scaleY);
-            inspectAt(x, y);
-        });
+        // 3. Mathematical Transforms (ColourProcessor C++ logic)
+        function applyGrayscale() {
+            if (!pristinePixels) return;
+            const src = pristinePixels.data;
+            const w = canvasOriginal.width, h = canvasOriginal.height;
+            const output = ctxConv.createImageData(w, h);
+            const dst = output.data;
 
-        canvas.addEventListener('mousemove', (e) => {
-            if (e.buttons === 1) { // Click-drag
-                const rect = canvas.getBoundingClientRect();
-                const scaleX = canvas.width / rect.width;
-                const scaleY = canvas.height / rect.height;
+            for (let i = 0; i < src.length; i += 4) {
+                const r = src[i];
+                const g = src[i + 1];
+                const b = src[i + 2];
+                // ITU-R BT.601 luminance
+                const gray = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
+                dst[i] = gray;
+                dst[i + 1] = gray;
+                dst[i + 2] = gray;
+                dst[i + 3] = src[i + 3];
+            }
+
+            ctxConv.putImageData(output, 0, 0);
+            ctxDualProc.putImageData(output, 0, 0);
+            activeMode = "Grayscale (BT.601)";
+            activeModeLabel.innerText = activeMode;
+            dualProcMode.innerText = activeMode;
+        }
+
+        function applyInvert() {
+            const current = ctxConv.getImageData(0, 0, canvasConverted.width, canvasConverted.height);
+            const data = current.data;
+            for (let i = 0; i < data.length; i += 4) {
+                data[i] = 255 - data[i];
+                data[i + 1] = 255 - data[i + 1];
+                data[i + 2] = 255 - data[i + 2];
+            }
+            ctxConv.putImageData(current, 0, 0);
+            ctxDualProc.putImageData(current, 0, 0);
+            activeMode = "Inverted Colours";
+            activeModeLabel.innerText = activeMode;
+            dualProcMode.innerText = activeMode;
+        }
+
+        function applyToggleBgrRgb() {
+            const current = ctxConv.getImageData(0, 0, canvasConverted.width, canvasConverted.height);
+            const data = current.data;
+            for (let i = 0; i < data.length; i += 4) {
+                const tmp = data[i];     // Red
+                data[i] = data[i + 2];   // Red = Blue
+                data[i + 2] = tmp;       // Blue = Red
+            }
+            ctxConv.putImageData(current, 0, 0);
+            ctxDualProc.putImageData(current, 0, 0);
+            isRgbRepresentation = !isRgbRepresentation;
+            activeMode = isRgbRepresentation ? "RGB Representation" : "Default BGR Layout";
+            activeModeLabel.innerText = activeMode;
+            dualProcMode.innerText = activeMode;
+        }
+
+        function applyIsolateChannel(chIdx) {
+            if (!pristinePixels) return;
+            const src = pristinePixels.data;
+            const w = canvasOriginal.width, h = canvasOriginal.height;
+            const output = ctxConv.createImageData(w, h);
+            const dst = output.data;
+
+            for (let i = 0; i < src.length; i += 4) {
+                dst[i] = (chIdx === 2) ? src[i] : 0;         // Red
+                dst[i + 1] = (chIdx === 1) ? src[i + 1] : 0; // Green
+                dst[i + 2] = (chIdx === 0) ? src[i + 2] : 0; // Blue
+                dst[i + 3] = src[i + 3];
+            }
+
+            ctxConv.putImageData(output, 0, 0);
+            ctxDualProc.putImageData(output, 0, 0);
+            const names = ["Blue", "Green", "Red"];
+            activeMode = `Isolated ${names[chIdx]}`;
+            activeModeLabel.innerText = activeMode;
+            dualProcMode.innerText = activeMode;
+        }
+
+        function applyChannelScaling() {
+            if (!pristinePixels) return;
+            const bFactor = parseInt(blueSlider.value, 10) / 100.0;
+            const gFactor = parseInt(greenSlider.value, 10) / 100.0;
+            const rFactor = parseInt(redSlider.value, 10) / 100.0;
+
+            blueNum.innerText = `${bFactor.toFixed(2)}x`;
+            greenNum.innerText = `${gFactor.toFixed(2)}x`;
+            redNum.innerText = `${rFactor.toFixed(2)}x`;
+
+            const src = pristinePixels.data;
+            const w = canvasOriginal.width, h = canvasOriginal.height;
+            const output = ctxConv.createImageData(w, h);
+            const dst = output.data;
+
+            for (let i = 0; i < src.length; i += 4) {
+                dst[i] = Math.min(255, Math.max(0, Math.round(src[i] * rFactor)));
+                dst[i + 1] = Math.min(255, Math.max(0, Math.round(src[i + 1] * gFactor)));
+                dst[i + 2] = Math.min(255, Math.max(0, Math.round(src[i + 2] * bFactor)));
+                dst[i + 3] = src[i + 3];
+            }
+
+            ctxConv.putImageData(output, 0, 0);
+            ctxDualProc.putImageData(output, 0, 0);
+            activeMode = "Custom Channel Scale";
+            activeModeLabel.innerText = activeMode;
+            dualProcMode.innerText = activeMode;
+        }
+
+        // 4. Pixel Inspector (Bounds-checked coordinate sampling)
+        function inspectAt(x, y) {
+            if (x < 0 || x >= canvasConverted.width || y < 0 || y >= canvasConverted.height) return;
+            const pixel = ctxConv.getImageData(x, y, 1, 1).data;
+            const r = pixel[0];
+            const g = pixel[1];
+            const b = pixel[2];
+
+            const hex = "#" + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('').toUpperCase();
+            const luma = (0.299 * r + 0.587 * g + 0.114 * b).toFixed(1);
+
+            inspectorSwatch.style.backgroundColor = hex;
+            inspectorCoord.innerText = `Pos: (${x}, ${y})`;
+            inspectorHex.innerText = hex;
+            readoutBlue.innerText = b;
+            readoutGreen.innerText = g;
+            readoutRed.innerText = r;
+            readoutLuma.innerText = luma;
+        }
+
+        function registerInspectorEvents(targetCanvas) {
+            function handlePick(e) {
+                const rect = targetCanvas.getBoundingClientRect();
+                const scaleX = targetCanvas.width / rect.width;
+                const scaleY = targetCanvas.height / rect.height;
                 const x = Math.floor((e.clientX - rect.left) * scaleX);
                 const y = Math.floor((e.clientY - rect.top) * scaleY);
                 inspectAt(x, y);
             }
+
+            targetCanvas.addEventListener('click', handlePick);
+            targetCanvas.addEventListener('mousemove', (e) => {
+                if (e.buttons === 1) handlePick(e);
+            });
+        }
+
+        registerInspectorEvents(canvasConverted);
+        registerInspectorEvents(canvasOriginal);
+        registerInspectorEvents(canvasDualOrig);
+        registerInspectorEvents(canvasDualProc);
+
+        // 5. Split Curtain Slider Logic
+        function updateSplitCurtain(clientX) {
+            const rect = splitContainer.getBoundingClientRect();
+            let pos = (clientX - rect.left) / rect.width;
+            pos = Math.max(0.01, Math.min(0.99, pos));
+            splitCurtain.style.width = `${pos * 100}%`;
+            splitHandle.style.left = `${pos * 100}%`;
+        }
+
+        splitContainer.addEventListener('mousedown', (e) => {
+            isDraggingSplit = true;
+            updateSplitCurtain(e.clientX);
         });
-    }
 
-    setupCanvasInspection(origCanvas);
-    setupCanvasInspection(procCanvas);
+        window.addEventListener('mousemove', (e) => {
+            if (isDraggingSplit) {
+                updateSplitCurtain(e.clientX);
+            }
+        });
 
-    // 4. File Upload Handler
-    imageInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+        window.addEventListener('mouseup', () => {
+            isDraggingSplit = false;
+        });
 
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            const img = new Image();
-            img.onload = () => {
-                origCanvas.width = img.width;
-                origCanvas.height = img.height;
-                procCanvas.width = img.width;
-                procCanvas.height = img.height;
+        // 6. View Mode Toggling (Split vs. Dual Side-by-Side)
+        tabSplit.addEventListener('click', () => {
+            tabSplit.classList.add('active');
+            tabDual.classList.remove('active');
+            splitContainer.style.display = 'inline-block';
+            dualContainer.style.display = 'none';
+            isDualView = false;
+        });
 
-                origCtx.drawImage(img, 0, 0);
-                pristineImageData = origCtx.getImageData(0, 0, img.width, img.height);
-                resetState();
-                inspectAt(Math.floor(img.width / 2), Math.floor(img.height / 2));
+        tabDual.addEventListener('click', () => {
+            tabDual.classList.add('active');
+            tabSplit.classList.remove('active');
+            splitContainer.style.display = 'none';
+            dualContainer.style.display = 'grid';
+            isDualView = true;
+        });
+
+        // 7. Drag and Drop & File Uploads
+        dropzone.addEventListener('click', () => fileInput.click());
+
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('drag-active');
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('drag-active');
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('drag-active');
+            if (e.dataTransfer.files.length) {
+                loadImageFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                loadImageFile(e.target.files[0]);
+            }
+        });
+
+        function loadImageFile(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    setDimensions(img.width, img.height);
+                    ctxOrig.drawImage(img, 0, 0);
+                    finalizeImageLoad();
+                };
+                img.src = e.target.result;
             };
-            img.src = event.target.result;
-        };
-        reader.readAsDataURL(file);
-    });
+            reader.readAsDataURL(file);
+        }
 
-    // 5. Buttons and Keyboard bindings
-    btnLoadSample.addEventListener('click', drawBenchmarkPattern);
-    btnGrayscale.addEventListener('click', applyGrayscale);
-    btnInvert.addEventListener('click', applyInvert);
-    btnToggleBgrRgb.addEventListener('click', applyToggleBgrRgb);
-    btnIsolateBlue.addEventListener('click', () => applyIsolateChannel(0));
-    btnIsolateGreen.addEventListener('click', () => applyIsolateChannel(1));
-    btnIsolateRed.addEventListener('click', () => applyIsolateChannel(2));
-    btnReset.addEventListener('click', resetState);
+        // 8. Event Listeners
+        btnBenchmarkPattern.addEventListener('click', renderBenchmarkPattern);
+        btnSampleSunset.addEventListener('click', renderSampleSunset);
 
-    blueSlider.addEventListener('input', applyChannelAdjustment);
-    greenSlider.addEventListener('input', applyChannelAdjustment);
-    redSlider.addEventListener('input', applyChannelAdjustment);
+        btnGrayscale.addEventListener('click', applyGrayscale);
+        btnInvert.addEventListener('click', applyInvert);
+        btnToggleBgrRgb.addEventListener('click', applyToggleBgrRgb);
 
-    btnExportPng.addEventListener('click', () => {
-        const link = document.createElement('a');
-        link.download = 'converted_image.png';
-        link.href = procCanvas.toDataURL('image/png');
-        link.click();
-    });
+        btnIsolateBlue.addEventListener('click', () => applyIsolateChannel(0));
+        btnIsolateGreen.addEventListener('click', () => applyIsolateChannel(1));
+        btnIsolateRed.addEventListener('click', () => applyIsolateChannel(2));
 
-    btnExportJpg.addEventListener('click', () => {
-        const link = document.createElement('a');
-        link.download = 'converted_image.jpg';
-        link.href = procCanvas.toDataURL('image/jpeg', 0.92);
-        link.click();
-    });
+        blueSlider.addEventListener('input', applyChannelScaling);
+        greenSlider.addEventListener('input', applyChannelScaling);
+        redSlider.addEventListener('input', applyChannelScaling);
 
-    window.addEventListener('keydown', (e) => {
-        const key = e.key.toUpperCase();
-        if (key === 'G') applyGrayscale();
-        else if (key === 'I') applyInvert();
-        else if (key === 'T') applyToggleBgrRgb();
-        else if (key === '1') applyIsolateChannel(0);
-        else if (key === '2') applyIsolateChannel(1);
-        else if (key === '3') applyIsolateChannel(2);
-        else if (key === 'R') resetState();
-    });
+        btnReset.addEventListener('click', resetAll);
 
-    // Initialize with benchmark pattern on load
-    drawBenchmarkPattern();
-</script>
+        btnExportPng.addEventListener('click', () => {
+            const a = document.createElement('a');
+            a.download = `chromatica_converted_${Date.now()}.png`;
+            a.href = canvasConverted.toDataURL('image/png');
+            a.click();
+        });
+
+        btnExportJpg.addEventListener('click', () => {
+            const a = document.createElement('a');
+            a.download = `chromatica_converted_${Date.now()}.jpg`;
+            a.href = canvasConverted.toDataURL('image/jpeg', 0.94);
+            a.click();
+        });
+
+        // Keyboard Shortcuts
+        window.addEventListener('keydown', (e) => {
+            if (['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase())) return;
+            const k = e.key.toUpperCase();
+            if (k === 'G') applyGrayscale();
+            else if (k === 'I') applyInvert();
+            else if (k === 'T') applyToggleBgrRgb();
+            else if (k === '1') applyIsolateChannel(0);
+            else if (k === '2') applyIsolateChannel(1);
+            else if (k === '3') applyIsolateChannel(2);
+            else if (k === 'R') resetAll();
+        });
+
+        // Initial setup
+        renderBenchmarkPattern();
+    </script>
 </body>
 </html>
